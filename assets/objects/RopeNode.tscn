@@ -15,8 +15,8 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 position = Vector2( -0.00984311, -0.00984311 )
 scale = Vector2( 0.0763079, 0.0763079 )
 texture = ExtResource( 1 )
-[connection signal="body_entered" from="CircleColl" to="." method="_on_CircleColl_body_entered"]
 [connection signal="body_exited" from="CircleColl" to="." method="_on_CircleColl_body_exited"]

@@ -49,7 +49,13 @@ func _process(delta):
 	
 	update_nodes(delta)
 	update_distance()
+
 	detect_collisions()
+	detect_collisions()
+	detect_collisions()
+	detect_collisions()
+	detect_collisions()
+	
 	var line_segments : PoolVector2Array 
 	for rope in ropes:
 		line_segments.append(rope.position)
@@ -62,12 +68,27 @@ func detect_collisions():
 	for i in range(ropes.size()):
 		
 		if ropes[i].colliding :
-				var coll_info = ropes[i].collision_info
+			var coll_data = ropes[i].collision_data.values()
+				
+			for j in range(coll_data.size()):
+				var coll_info = coll_data[j]#.collision_data[j]
 				var collider = coll_info.get("collider")
 				var coll_type = collider.get_node("CollisionShape2D").shape
 				#var dir = Vector2(ropes[i].position - to_local(ropes[i].coll_position))
+				if coll_type is CircleShape2D:
+					
+					var radius = coll_type.radius * max(collider.scale.x, collider.scale.y)
+					var distance = ropes[i].position.distance_to(to_local(collider.global_position))
+									
+					
+					if distance - radius > 0:
+						continue;
+					
+					var dir = Vector2(ropes[i].position -to_local(collider.global_position)).normalized() 
+					var hitPos = to_local(collider.global_position) + dir * radius
+					ropes[i].position = hitPos
 				
-				if coll_type is RectangleShape2D:
+				elif coll_type is RectangleShape2D:
 					
 					var rect_scale = collider.scale
 					var rect_size = coll_type.extents
@@ -92,6 +113,7 @@ func detect_collisions():
 						
 					var hitPos = to_local(collider.to_global(local_pos))
 					ropes[i].position = hitPos
+				
 					
 #					var sprite = Sprite.new()
 #					sprite.texture = load("res://icon.png")
@@ -140,4 +162,5 @@ func update_distance():
 			else:
 				ropes[i].position -= motion * (percent/2)
 				ropes[i+1].position += motion * (percent/2)
+	
 
