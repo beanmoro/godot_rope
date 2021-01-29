@@ -3,40 +3,34 @@ extends Position2D
 var colliding = false
 var old_position : Vector2
 var coll_position : Vector2
-var coll_dist : float = 2.5
-var nAngle = 0
+var collision_rad : float = 8
+
+var last_collide = null
+var collision_info = null
+
 func _ready():
 	old_position = position
-	#connect("body_entered", self, "is_colliding")
+	$CircleColl/CollisionShape2D.shape.radius = collision_rad
 
 func _process(delta):
-	
+
 	if colliding :
 		$Sprite.modulate = Color.red
 	else:
-		$Sprite.modulate = Color.black
-
-func _physics_process(delta):
-	
-	pass
-	
-	
-	
-	
-func detect_coll( raycast : RayCast2D) -> bool :
-	var coll = false
-	
-	if raycast.is_colliding():
-		var body = raycast.get_collider()
-		if body.is_in_group("Solid"):
-			coll_position = raycast.get_collision_point()
-			coll = true
-	
-	return coll
-	
-
-
+		$Sprite.modulate = Color.green
 
 func _on_CircleColl_body_entered(body):
-	
-	pass
+	if body.is_in_group("Solid"):
+			var world = get_world_2d().direct_space_state
+			var collision = world.intersect_ray(global_position, body.global_position)
+			
+			if collision:
+				collision_info = collision
+				last_collide = collision.get("collider")
+				colliding = true
+
+
+func _on_CircleColl_body_exited(body):
+	if colliding and last_collide == body:
+		colliding = false
+		last_collide = null

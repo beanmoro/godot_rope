@@ -1,25 +1,33 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/objects/Rope.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/objects/Rope2.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/objects/Wall.tscn" type="PackedScene" id=3]
 
 [node name="Main" type="Node2D"]
 position = Vector2( 404.468, 204.907 )
 
-[node name="Rope2" parent="." instance=ExtResource( 2 )]
-
 [node name="Wall" parent="." groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
-position = Vector2( -293.93, 72.5016 )
+position = Vector2( -237.856, 76.2296 )
 rotation = 1.38204
-scale = Vector2( 7.4, 0.320001 )
+scale = Vector2( 8, 0.5 )
+
+[node name="Wall3" parent="." groups=[
+"Solid",
+] instance=ExtResource( 3 )]
+position = Vector2( 112.144, 204.23 )
+rotation = 0.785398
+scale = Vector2( 3, 3 )
 
 [node name="Wall2" parent="." groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
-position = Vector2( 388.498, 158.028 )
-scale = Vector2( 7.4, 0.320001 )
+position = Vector2( 582.498, 44.028 )
+scale = Vector2( 6, 0.75 )
 
 [node name="Rope" parent="." instance=ExtResource( 1 )]
+rope_length = 300
+constrain = 15
+rope_width = 1
+collision_radius = 16.0
