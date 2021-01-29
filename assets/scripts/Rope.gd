@@ -1,30 +1,30 @@
 extends Node2D
 
-export var rope_length = 300
-export var constrain = 10
-var ropes = []
+export var rope_nodes : int = 100
+export var constrain : float = 10.0
+export var iterations : int = 5
 
+#Line Properties
 export var rope_width = 2
 export var rope_color : Color = Color.white
 export var collision_radius : float = 8
+
 export var start_pin = true
 export var end_pin = false
 
 
 
-var friction = 0.98
+export var friction : float = 0.98
 var gravity = Vector2(0, 9.8)
+var ropes = []
 
 var rope_node = preload("res://assets/objects/RopeNode.tscn")
 
-
 func _ready():
-	
-	var last_node = null
 	$Line2D.width = rope_width
 	$Line2D.default_color = rope_color
 	
-	for i in range(rope_length / constrain):
+	for i in range(rope_nodes):
 		var node = rope_node.instance()
 		node.position = position + Vector2(constrain * i, 0)
 		node.old_position = node.position
@@ -33,35 +33,24 @@ func _ready():
 		ropes.append(node)
 
 
-		
-func _process(delta):
-	
-	if Input.is_action_pressed("left_click"):
-		ropes[0].position =  get_global_mouse_position() - global_position
-	if Input.is_action_pressed("right_click"):
-		ropes[ropes.size()-1].position =  get_global_mouse_position() - global_position
-	
+func _process(_delta):
 	if Input.is_action_just_pressed("PinFirst"):
 		start_pin = !start_pin
 	if Input.is_action_just_pressed("PinLast"):
 		end_pin = !end_pin
-	
-	
-	update_nodes(delta)
-	update_distance()
-
-	detect_collisions()
-	detect_collisions()
-	detect_collisions()
-	detect_collisions()
-	detect_collisions()
-	
-	var line_segments : PoolVector2Array 
+		
+	var line_segments : PoolVector2Array = []
 	for rope in ropes:
 		line_segments.append(rope.position)
 	$Line2D.points = line_segments
 	
+		
+func _physics_process(delta):
 	
+	update_nodes(delta)
+	for _i in range(iterations):
+		update_distance()
+		detect_collisions()
 
 func detect_collisions():
 	
@@ -74,12 +63,11 @@ func detect_collisions():
 				var coll_info = coll_data[j]#.collision_data[j]
 				var collider = coll_info.get("collider")
 				var coll_type = collider.get_node("CollisionShape2D").shape
-				#var dir = Vector2(ropes[i].position - to_local(ropes[i].coll_position))
+				
 				if coll_type is CircleShape2D:
 					
 					var radius = coll_type.radius * max(collider.scale.x, collider.scale.y)
 					var distance = ropes[i].position.distance_to(to_local(collider.global_position))
-									
 					
 					if distance - radius > 0:
 						continue;
@@ -106,61 +94,80 @@ func detect_collisions():
 						
 					if px * rect_scale.x < py * rect_scale.y :
 						var sx = sign(dx)
-						local_pos.x = sx * rect_size.x
+						local_pos.x = rect_size.x * sx
 					else:
 						var sy = sign(dy)
-						local_pos.y =  sy * rect_size.y
+						local_pos.y =  rect_size.y * sy
 						
 					var hitPos = to_local(collider.to_global(local_pos))
 					ropes[i].position = hitPos
-				
-					
-#					var sprite = Sprite.new()
-#					sprite.texture = load("res://icon.png")
-#					sprite.scale = Vector2(0.1, 0.1)
-#					sprite.modulate = Color.red
-#					var nod = add_child(sprite)
-#					sprite.position = hitPos
-	
-	
+
 
 
 func update_nodes(delta):
-	
 	for i in range(ropes.size()):
-		#if(i != 0 && i!=ropes.size()-1) || (i == 0 && !start_pin) || (i==ropes.size()-1 && !end_pin):
 		if (i !=0 && i!=ropes.size()-1) || (i == 0 && !start_pin) || (i==ropes.size()-1 && !end_pin):
 			var motion = (ropes[i].position - ropes[i].old_position) * friction
 			ropes[i].old_position = ropes[i].position
-			ropes[i].position +=  motion + (gravity * delta)
+			ropes[i].position +=  motion + (gravity * delta) 
+			
 
 func update_distance():
-	for i in range(ropes.size()):
-		if i == ropes.size()-1:
-			return
-
-		var distance = ropes[i].position.distance_to(ropes[i+1].position)
-		var difference = constrain - distance
-		var percent = difference / distance
-		var motion = ropes[i+1].position - ropes[i].position
+	for i in range(ropes.size()-1):
 
 		
+		if Input.is_action_pressed("left_click"):
+			ropes[0].position  =  get_viewport().get_mouse_position()
+		if Input.is_action_pressed("right_click"):
+			ropes[ropes.size()-1].position =  get_viewport().get_mouse_position()
+		
+		
+		var diffX = ropes[i].position.x - ropes[i+1].position.x
+		var diffY = ropes[i].position.y - ropes[i+1].position.y
+		var dist = ropes[i].position.distance_to(ropes[i+1].position)
+		var difference = 0
+		if dist > 0:
+			difference = (constrain - dist) / dist
+			
+		var translate = Vector2(diffX, diffY) *(0.5 * difference)
+		#ropes[i].position += translate
+		#ropes[i+1].position -= translate
 		
 		if i == 0:
 			if start_pin:
-				ropes[i+1].position += motion * percent
+				ropes[i+1].position -= translate
 			else:
-				ropes[i].position -= motion * (percent/2)
-				ropes[i+1].position += motion * (percent/2)
-		elif i == ropes.size()-1:
-			pass
+				ropes[i].position += translate
+				ropes[i+1].position -= translate
 		else:
 			if (i+1 == ropes.size()-1 && end_pin):
-				ropes[i].position -= motion * percent
-			#elif ropes[i].colliding:
-			#	ropes[i+1].position += motion * percent
+				ropes[i].position += translate
 			else:
-				ropes[i].position -= motion * (percent/2)
-				ropes[i+1].position += motion * (percent/2)
+				ropes[i].position += translate
+				ropes[i+1].position -= translate
+		
+		
+		
+#		var distance = ropes[i].position.distance_to(ropes[i+1].position)
+#		var difference = constrain - distance
+#		var percent = difference / distance
+#		var motion = ropes[i+1].position - ropes[i].position
+#
+#
+#		if i == 0:
+#			if start_pin:
+#				ropes[i+1].position += motion * percent
+#			else:
+#				ropes[i].position -= motion * (percent/2)
+#				ropes[i+1].position += motion * (percent/2)
+#		elif i == ropes.size()-1:
+#			pass
+#		else:
+#			if (i+1 == ropes.size()-1 && end_pin):
+#				ropes[i].position -= motion * percent
+#			#elif ropes[i].colliding:
+#			#	ropes[i+1].position += motion * percent
+#			else:
+#				ropes[i].position -= motion * (percent/2)
+#				ropes[i+1].position += motion * (percent/2)
 	
-

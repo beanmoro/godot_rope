@@ -6,52 +6,55 @@
 
 [node name="Main" type="Node2D"]
 
-[node name="Wall" parent="." groups=[
+[node name="Solids" type="Node2D" parent="."]
+
+[node name="Wall" parent="Solids" groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
 position = Vector2( 175.094, 308.161 )
 rotation = 1.38204
 scale = Vector2( 8, 0.5 )
 
-[node name="Wall2" parent="." groups=[
+[node name="Wall2" parent="Solids" groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
 position = Vector2( 995.448, 275.959 )
 scale = Vector2( 6, 0.75 )
 
-[node name="Wall3" parent="." groups=[
+[node name="Wall3" parent="Solids" groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
 position = Vector2( 525.094, 436.161 )
 rotation = 0.785398
 scale = Vector2( 3, 3 )
 
-[node name="CircleSolid" parent="." instance=ExtResource( 2 )]
+[node name="CircleSolid" parent="Solids" instance=ExtResource( 2 )]
 position = Vector2( 521.342, 310.192 )
 scale = Vector2( 2, 2 )
 
-[node name="CircleSolid2" parent="." instance=ExtResource( 2 )]
+[node name="CircleSolid2" parent="Solids" instance=ExtResource( 2 )]
 position = Vector2( 387.707, 438.482 )
 scale = Vector2( 2, 2 )
 
-[node name="CircleSolid3" parent="." instance=ExtResource( 2 )]
+[node name="CircleSolid3" parent="Solids" instance=ExtResource( 2 )]
 position = Vector2( 653.194, 438.482 )
 scale = Vector2( 2, 2 )
 
-[node name="CircleSolid4" parent="." instance=ExtResource( 2 )]
+[node name="CircleSolid4" parent="Solids" instance=ExtResource( 2 )]
 position = Vector2( 526.194, 559.482 )
 scale = Vector2( 2, 2 )
 
-[node name="CircleSolid5" parent="." instance=ExtResource( 2 )]
+[node name="CircleSolid5" parent="Solids" instance=ExtResource( 2 )]
 position = Vector2( 632.147, 186.124 )
 scale = Vector2( 3, 3 )
 
-[node name="CircleSolid6" parent="." instance=ExtResource( 2 )]
+[node name="CircleSolid6" parent="Solids" instance=ExtResource( 2 )]
 position = Vector2( 490.877, 155.852 )
 scale = Vector2( 4, 4 )
 
 [node name="Rope" parent="." instance=ExtResource( 1 )]
 position = Vector2( -1.49829, -1.49832 )
-rope_length = 1000
-rope_color = Color( 1, 0.819608, 0, 1 )
+constrain = 5.0
+iterations = 4
 collision_radius = 16.0
+friction = 1.0
