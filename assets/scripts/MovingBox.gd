@@ -11,5 +11,5 @@ func _process(_delta):
 	if Input.is_action_pressed("middle_click"):
 		motion = get_viewport().get_mouse_position() - global_position
 	
-	move_and_slide(motion * 10)
+	motion = move_and_slide(motion * 10)
 	

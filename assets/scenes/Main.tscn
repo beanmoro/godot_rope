@@ -57,7 +57,7 @@ scale = Vector2( 4, 4 )
 rope_nodes = 50
 constrain = 10.0
 iterations = 2
-rope_width = 5
+rope_width = 5.0
 collision_radius = 16.0
 friction = 0.98
 

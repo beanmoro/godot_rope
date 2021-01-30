@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/vine.png-ee5f3e8468ee3d98d63b770b97064e0f.stex"
+path="res://.import/circle_prot.png-19ab63042b7cdb80f6fe57e209382edd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/vine.png"
-dest_files=[ "res://.import/vine.png-ee5f3e8468ee3d98d63b770b97064e0f.stex" ]
+source_file="res://assets/sprites/circle_prot.png"
+dest_files=[ "res://.import/circle_prot.png-19ab63042b7cdb80f6fe57e209382edd.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false

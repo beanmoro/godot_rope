@@ -14,13 +14,16 @@ func _ready():
 
 func _process(_delta):
 	
-	if Input.is_action_pressed("debug_mode"):
+	if Input.is_action_just_pressed("debug_mode"):
 		debug = !debug
 		$Sprite.visible = debug
+		$Sprite.scale = Vector2((collision_rad/2) / 100, (collision_rad/2) / 100)
 	
 	if debug :
 		if $Sprite.visible:
-			if colliding :
+			if pinned:
+				$Sprite.modulate = Color.blue
+			elif colliding :
 				$Sprite.modulate = Color.red
 			else:
 				$Sprite.modulate = Color.green
@@ -39,7 +42,6 @@ func _physics_process(_delta):
 						collision_data[collision.get("collider_id")] = collision
 					last_collide = collision
 					colliding = true
-
 
 func _on_CircleColl_body_exited(body):
 	if colliding and last_collide.get("collider") == body:
