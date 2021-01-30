@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/objects/Rope.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/objects/CircleSolid.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/objects/Wall.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/objects/MovingBox.tscn" type="PackedScene" id=4]
 
 [node name="Main" type="Node2D"]
 
@@ -53,8 +54,14 @@ position = Vector2( 490.877, 155.852 )
 scale = Vector2( 4, 4 )
 
 [node name="Rope" parent="." instance=ExtResource( 1 )]
-position = Vector2( -1.49829, -1.49832 )
-constrain = 5.0
-iterations = 4
+rope_nodes = 50
+constrain = 10.0
+iterations = 2
+rope_width = 5
 collision_radius = 16.0
-friction = 1.0
+friction = 0.98
+
+[node name="MovingBox" parent="." groups=[
+"Solid",
+] instance=ExtResource( 4 )]
+position = Vector2( 772.098, 389.71 )

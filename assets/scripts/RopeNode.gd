@@ -5,6 +5,8 @@ var old_position : Vector2
 var collision_rad : float = 8
 var collision_data = {}
 var last_collide = null
+var pinned = false
+var debug = false
 
 func _ready():
 	old_position = position
@@ -12,16 +14,21 @@ func _ready():
 
 func _process(_delta):
 	
-	if $Sprite.visible:
-		if colliding :
-			$Sprite.modulate = Color.red
-		else:
-			$Sprite.modulate = Color.green
+	if Input.is_action_pressed("debug_mode"):
+		debug = !debug
+		$Sprite.visible = debug
+	
+	if debug :
+		if $Sprite.visible:
+			if colliding :
+				$Sprite.modulate = Color.red
+			else:
+				$Sprite.modulate = Color.green
 
 func _physics_process(_delta):
 	
 	var bodies = $CircleColl.get_overlapping_bodies()
-	if bodies:
+	if bodies and !pinned:
 		for body in bodies:
 			if body.is_in_group("Solid"):
 				var world = get_world_2d().direct_space_state
