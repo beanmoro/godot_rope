@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/objects/Rope.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/objects/CircleSolid.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/objects/Wall.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/objects/MovingBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/sprites/rope_shaded.png" type="Texture" id=5]
 
 [node name="Main" type="Node2D"]
 
@@ -12,14 +13,14 @@
 [node name="Wall" parent="Solids" groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
-position = Vector2( 175.094, 308.161 )
-rotation = 1.38204
-scale = Vector2( 8, 0.5 )
+position = Vector2( 165.003, 306.479 )
+rotation = 1.57118
+scale = Vector2( 3.56064, 1.58197 )
 
 [node name="Wall2" parent="Solids" groups=[
 "Solid",
 ] instance=ExtResource( 3 )]
-position = Vector2( 995.448, 275.959 )
+position = Vector2( 1042.54, 275.959 )
 scale = Vector2( 6, 0.75 )
 
 [node name="Wall3" parent="Solids" groups=[
@@ -42,26 +43,24 @@ position = Vector2( 653.194, 438.482 )
 scale = Vector2( 2, 2 )
 
 [node name="CircleSolid4" parent="Solids" instance=ExtResource( 2 )]
-position = Vector2( 526.194, 559.482 )
+position = Vector2( 529.557, 108.761 )
 scale = Vector2( 2, 2 )
 
 [node name="CircleSolid5" parent="Solids" instance=ExtResource( 2 )]
-position = Vector2( 632.147, 186.124 )
+position = Vector2( 689.328, 107.08 )
 scale = Vector2( 3, 3 )
 
 [node name="CircleSolid6" parent="Solids" instance=ExtResource( 2 )]
-position = Vector2( 490.877, 155.852 )
+position = Vector2( 342.879, 103.716 )
 scale = Vector2( 4, 4 )
 
 [node name="Rope" parent="." instance=ExtResource( 1 )]
-rope_nodes = 50
-constrain = 10.0
+rope_nodes = 60
 iterations = 2
-rope_width = 5.0
-collision_radius = 16.0
-friction = 0.98
+rope_width = 10.0
+rope_texture = ExtResource( 5 )
 
 [node name="MovingBox" parent="." groups=[
 "Solid",
 ] instance=ExtResource( 4 )]
-position = Vector2( 772.098, 389.71 )
+position = Vector2( 815.824, 364.483 )

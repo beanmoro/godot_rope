@@ -10,7 +10,8 @@ var rope_node = preload("res://assets/objects/RopeNode.tscn")
 #Rope Line Vars
 export var rope_width : float = 2
 export var rope_color : Color = Color.white
-export var collision_radius : float = 8
+export var collision_radius : float = 16.0
+export var rope_texture : StreamTexture = null
 
 #Rope Physics Vars
 export var friction : float = 0.98
@@ -19,6 +20,8 @@ var gravity = Vector2(0, 9.8)
 func _ready() -> void:
 	$Line2D.width = rope_width
 	$Line2D.default_color = rope_color
+	$Line2D.texture = rope_texture
+	$Line2D.texture_mode =Line2D.LINE_TEXTURE_TILE
 	
 	for i in range(rope_nodes):
 		var node = rope_node.instance()
@@ -145,9 +148,3 @@ func update_distance() -> void:
 			else:
 				ropes[i].position += motion * (difference/2)
 				ropes[i+1].position -= motion * (difference/2)
-			
-#		var distance = ropes[i].position.distance_to(ropes[i+1].position)
-#		var difference = constrain - distance
-#		var percent = difference / distance
-#		var motion = ropes[i+1].position - ropes[i].position
-#

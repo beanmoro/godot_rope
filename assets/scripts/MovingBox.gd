@@ -1,6 +1,5 @@
 extends KinematicBody2D
 
-
 func _ready():
 	pass
 
@@ -12,4 +11,3 @@ func _process(_delta):
 		motion = get_viewport().get_mouse_position() - global_position
 	
 	motion = move_and_slide(motion * 10)
-	

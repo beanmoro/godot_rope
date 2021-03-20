@@ -9,6 +9,7 @@ var pinned = false
 var debug = false
 
 func _ready():
+	add_to_group("RopeNodes")
 	old_position = position
 	$CircleColl/CollisionShape2D.shape.radius = collision_rad
 
